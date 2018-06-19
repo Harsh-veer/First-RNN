@@ -1,0 +1,2 @@
+# First-RNN
+vanilla RNN 
