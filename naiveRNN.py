@@ -81,7 +81,14 @@ def model(x,y,prehs):
     dWxh, dWhh, dWhy = np.zeros_like(Wxh), np.zeros_like(Whh), np.zeros_like(Why)
     dbh, dby = np.zeros_like(bh), np.zeros_like(by)
     dhnext = np.zeros([hidden_size,1])
-    """for BPTT, unroll the rnn, apply and accumulate gradients and then apply"""
+    """for BPTT, unroll the rnn, apply and accumulate gradients and then apply, here it is TBPTT
+        1.Forward pass: Step through the next k1 time steps, computing the input, hidden, and output states.
+        2.Compute the loss, summed over the previous time steps (see below).
+        3.Backward pass: Compute the gradient of the loss w.r.t. all parameters, accumulating over the previous k2 time steps (this requires having stored all activations for these time steps). Clip gradients to avoid the exploding gradient problem (happens rarely).
+        4.Update parameters (this occurs once per chunk, not incrementally at each time step).
+        5.If processing multiple chunks of a longer sequence, store the hidden state at the last time step (will be used to initialize hidden state for beginning of next chunk). If we've reached the end of the sequence, reset the memory/hidden state and move to the beginning of the next sequence (or beginning of the same sequence, if there's only one).
+        Repeat from step 1.
+        """
     for t in reversed(range(len(x))): # this is BPTT
         inputs=np.array(np.matrix(x[t]).T)
         dy=np.copy(ps[t])
