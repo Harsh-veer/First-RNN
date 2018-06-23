@@ -105,7 +105,7 @@ def model(x,y,prehs):
     for dparam in [dWxh, dWhh, dWhy, dbh, dby]: # avoiding exploing gradients
         np.clip(dparam, -5, 5, out=dparam)
 
-    return loss,dWxh,dWhh,dWhy,dbh,dby,np.float32(hs[len(x)-1])
+    return np.float32(loss),dWxh,dWhh,dWhy,dbh,dby,hs[len(x)-1]
 
 
 def train():
