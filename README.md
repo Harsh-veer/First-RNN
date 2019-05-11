@@ -1,2 +1,2 @@
-# RNN from scratch
-Vanilla RNN implementation in python using numpy
+# Recurrent Neural Network Vanilla Model 
+Vanilla RNN implementation in python
